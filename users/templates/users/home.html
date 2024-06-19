@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div>
+            <h3>Welcome {{ request.user.first_name }}</h3>
+            <a href="{% url 'signout' %}">Log out</a>
+        </div>
+        
+    </body>
+</html>

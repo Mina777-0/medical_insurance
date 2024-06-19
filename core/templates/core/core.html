@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Sign Page</title>
+        <style>
+            .section{
+                display: none;
+            }
+        </style>
+
+        <script>
+            
+            function showSection(page)
+            {
+                document.querySelectorAll('.section').forEach(div =>{
+                    div.style.display = "none";
+                })
+
+                document.querySelector(`#${page}`).style.display = "block";
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelectorAll('.sec-but').forEach(button => {
+                    button.onclick = function(){
+                        const section = this.dataset.section;
+                        history.pushState({"section":section}, "", `${section}`);
+                        showSection(section);
+                    }
+                })
+            });
+        </script>
+        
+    </head>
+    <body>
+        <div>
+            <div>
+                <button class="sec-but" data-section="signin">Signin</button>
+            </div>
+            
+            <div id="signin" class="section">
+                <form method="post" action="{% url 'signin' %}">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email Address">
+                    <input type="password" name="password" placeholder="Password">
+                    <button type="submit">Log in</button>
+                </form>
+            </div>
+
+        </div>
+
+    </body>
+</html>

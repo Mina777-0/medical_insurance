@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Permissions Page</title>
+    </head>
+    <body>
+        <div>
+            <h3>Group Permissions:</h3>
+            <ul>
+                {% for permission in permissions %}
+                    <li>{{ permission }}</li>
+                {% empty %}
+                    <li>This group isn't assigned permissions</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'remove_permissions' group.name %}">Remove permissions</a>
+        </div>
+        <div>
+            <h3>Available permssions:</h3>
+            <form id="permission-form" method="post" action="{% url 'add_permissions' group.name %}">
+                {% csrf_token %}
+                <label>Select model</label><br>
+                <input type="checkbox" name="permissions" value="{{ customuser_add.id }}"> Add Custom User<br>
+                <input type="checkbox" name="permissions" value="{{ customuser_change.id }}"> Change Custom User<br>
+                <input type="checkbox" name="permissions" value="{{ customuser_delete.id }}"> Delete Custom User<br>
+                <input type="checkbox" name="permissions" value="{{ customuser_view.id }}"> View Custom User<br>
+                <input type="checkbox" name="permissions" value="{{ medical_policy_add.id }}"> Add Medical Insurance<br>
+                <input type="checkbox" name="permissions" value="{{ medical_policy_change.id }}"> Change Medical Insurance<br>
+                <input type="checkbox" name="permissions" value="{{ medical_policy_delete.id }}"> Delete Medical Insurance<br>
+                <input type="checkbox" name="permissions" value="{{ medical_policy_view.id }}"> View Medical Insurance<br>
+                <button type="submit">save</button>
+            </form>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+
+                document.querySelector('#permission-form').addEventListener('submit', function(event){
+                    event.preventDefault();
+
+                    var fromdata= new FormData(this);
+
+                    fetch("{% url 'add_permissions' group.name %}", {
+                        method: 'POST',
+                        body: fromdata,
+                        headers:{
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                        }
+                    })
+
+                    .then(response =>{
+                        if (!response.ok){
+                            throw new Error("Network is not responding");
+                        }
+
+                        return response.json();
+                    })
+
+                    .then(data =>{
+                        console.log("data:", data.message);
+                        alert(data.message);
+                        window.location.href = "{% url 'add_permissions' group.name %}";
+                    })
+
+                    .catch(error =>{
+                        console.log("Error fetching and adding permssions", error);
+                        alert("Error! Can't add permissions");
+                    })
+                });
+            });
+
+        </script>
+    </body>
+</html>

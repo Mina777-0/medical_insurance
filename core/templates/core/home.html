@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Admin Page</title>
+
+        <style>
+            body{
+                margin: 0;
+                background-color: rgb(171, 236, 236);
+                color: rgb(48, 52, 52);
+            }
+            body a{
+                color: rgb(48, 52, 52);
+            }
+
+            ul{
+                margin: 0;
+                padding: 8px;
+                list-style-type: none;
+                overflow: hidden;
+                background-color: rgb(82, 127, 127);
+            }
+
+            li{
+                margin: 5px;
+                float: left;
+            }
+            li a{
+                text-decoration: none;
+            }
+            a{
+                text-decoration: none;
+            }
+
+            tr, td{
+                padding: 6px;
+                text-align: center;
+            }
+
+            
+        </style>
+        <script>
+
+            function dark(){
+                document.querySelector('body').style.backgroundColor = "rgb(55, 68, 68)";
+                document.querySelector('body').style.color = "aqua";
+                document.querySelector('body a').style.color = "aqua";
+
+            }
+
+            function day(){
+                document.querySelector('body').style.backgroundColor = "rgb(171, 236, 236)";
+                document.querySelector('body').style.color = "rgb(48, 52, 52)";
+                document.querySelector('body a').style.color = "rgb(48, 52, 52)";
+
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelectorAll('.mode').forEach(button =>{
+                    button.onclick= function(){
+                        const mode = this.dataset.mode;
+                        if (mode == "dark") {
+                            dark();
+                        } else{
+                            day();
+                        }
+                    }
+                })
+            });
+        </script>
+        
+    </head>
+    <body>
+        <div>
+            <ul>
+                <li>Welcome admin {{ request.user.first_name }}</li>
+                <li>{{ request.user.email }}</li>
+                <li><a href="{% url 'signout' %}">Log out</a></li>
+                <li><button class="mode" data-mode="dark">Dark</button>
+                    <button class="mode" data-mode="day">Day</button>
+                </li>
+                <li><a href="{% url 'users' %}">Users</a></li>
+                <li><a href="{% url 'groups' %}">Groups</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Medical policies:</h3><button><a href="{% url 'new_policy' %}">Add Medical Insurance</a></button>
+            <table>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Phone number</th>
+                <th>Subscription</th>
+                <th>Payment status</th>
+                <th>State</th>
+                <th>Family members</th>
+
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.customer.first_name }}</td>
+                        <td>{{ customer.customer.last_name }}</td>
+                        <td>{{ customer.phone_number }}</td>
+                        <td>{{ customer.subscription }}</td>
+                        <td>{{ customer.payment }}</td>
+                        <td>{{ customer.insurance_status }}</td>
+                        <td>{{ customer.family_policy }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

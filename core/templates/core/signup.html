@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Admin Page</title>
+
+        <style>
+            body{
+                margin: 0;
+                background-color: rgb(171, 236, 236);
+                color: rgb(48, 52, 52);
+            }
+            
+        </style>
+        <script>
+
+            function dark(){
+                document.querySelector('body').style.backgroundColor = "rgb(55, 68, 68)";
+                document.querySelector('body').style.color = "aqua";
+                document.querySelector('body a').style.color = "aqua";
+
+            }
+
+            function day(){
+                document.querySelector('body').style.backgroundColor = "rgb(171, 236, 236)";
+                document.querySelector('body').style.color = "rgb(48, 52, 52)";
+                document.querySelector('body a').style.color = "rgb(48, 52, 52)";
+
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelectorAll('.mode').forEach(button =>{
+                    button.onclick= function(){
+                        const mode = this.dataset.mode;
+                        if (mode == "dark") {
+                            dark();
+                        } else{
+                            day();
+                        }
+                    }
+                })
+            });
+        </script>
+        
+    </head>
+    <body>
+        <div>
+            <div id="signup" class="section">
+                <form method="post" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

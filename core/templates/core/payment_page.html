@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Payment Page</title>
+        <script src="https://js.stripe.com/v3/"></script>
+    </head>
+    <body>
+        <div>
+            <button id="checkout-button">Checkout</button>
+            <script>
+                var stripe = Stripe('{{ stripe_publishable_key }}');
+                var checkoutButton = document.getElementById('checkout-button');
+                const baseUrl = "{% url 'create_checkout_session' 0 %}".replace('0/','');
+                
+                var policyId = '{{ policy_id }}';
+                const url = `${baseUrl}${policyId}/`;
+
+                checkoutButton.addEventListener('click', function () {
+
+                    console.log(fetch(url, {
+                        method: 'POST',
+                        headers:{
+                            'Content-type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        if (session.error){
+                            alert(session.error)
+                        } else{
+                            return stripe.redirectToCheckout({ sessionId: session.id });
+                        }
+                        
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Error:', error);
+                    })
+                );
+                });
+            
+            </script>
+        </div>
+    </body>
+</html>

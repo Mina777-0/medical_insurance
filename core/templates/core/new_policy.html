@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>New Policy Page</title>
+        
+    </head>
+    <body>
+        <div>
+            <form id="single_form" method="post" action="{% url 'new_policy' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button>submit</button>
+            </form>
+        </div>
+
+        
+    </body>
+</html>

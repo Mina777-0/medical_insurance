@@ -1,0 +1,36 @@
+POST  http://127.0.0.1:8000/users/api_signin 
+Content-Type: application/json
+
+{"email": "harry@core.com", "password": "Harry12345"}
+
+
+###
+
+GET http://127.0.0.1:8000/users/insurance_policy 
+Content-Type: application/json
+Authorization: Token 00ea0811f6659a612f5a4efd05994a13de35a7c4
+
+
+{"email": "nahid@core.com"}
+
+
+###
+
+POST http://127.0.0.1:8000/users/insurance_policy
+Content-Type: application/json
+Authorization: Token a4aad5fa655581e2d63094551ac4649289155561
+
+
+{"email": "nahid@core.com", "subscription": "family", "phone_number": "+971508089883"}
+
+
+###
+
+GET http://127.0.0.1:8000/users/get_policies 
+Content-Type: application/json
+Authorization: Token a4aad5fa655581e2d63094551ac4649289155561
+
+
+###
+
+
