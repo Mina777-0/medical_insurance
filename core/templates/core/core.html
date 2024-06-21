@@ -6,9 +6,73 @@
 
         <title>Sign Page</title>
         <style>
+            body{
+                margin: 0;
+                background-color: rgb(192, 220, 244);
+                font-family:Georgia, 'Times New Roman', Times, serif;
+            }
             .section{
                 display: none;
+                padding: 20px;
+                margin-top: 150px;
+                margin-left: 40%;
+                border: thin;
+                border-radius: 5px;
+                background-color: rgb(2, 22, 41);
+                color:rgb(192, 220, 244);
+                width: 250px;
+                height: 150px;
+                text-align: center;
+                font-family: Georgia, 'Times New Roman', Times, serif;
             }
+
+            .section input{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 75%px;
+                height: 20px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+
+            .section button{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 25%px;
+                height: 30px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+
+
+            #signin-button{
+                margin: 15px;
+                float: right;
+                border: thin;
+                border-radius: 8px;
+                width: 75px;
+                height: 50px;
+                background-color: rgb(2, 22, 41);
+                color: aliceblue;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+                cursor: pointer;
+            }
+            .main{
+                margin-top: 50px;
+                margin-left: 40%; 
+                color: rgb(2, 22, 41); 
+                font-style: oblique;              
+            }
+
+            
         </style>
 
         <script>
@@ -37,7 +101,11 @@
     <body>
         <div>
             <div>
-                <button class="sec-but" data-section="signin">Signin</button>
+                <button id="signin-button" class="sec-but" data-section="signin">Sign in</button>
+            </div>
+
+            <div class="main">
+                <h1>You are in safe hands</h1>
             </div>
             
             <div id="signin" class="section">
