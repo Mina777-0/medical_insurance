@@ -107,6 +107,55 @@ def insurance_policy(request: Request):
         return Response(data= policy_serialiser.errors, status= status.HTTP_400_BAD_REQUEST)
     
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+def add_family_member(request: Request):
+    if request.method == "POST":
+        user= get_object_or_404(CustomUser, email= request.data.get('email'))
+        try: 
+            policy= MedicalInsurance.objects.get(customer= user.pk)
+            if policy.subscription == "family":
+                data={
+                    'insurance': policy.pk,
+                    'first_name': request.data.get('fname'),
+                    'last_name': request.data.get('lname'),
+                    'relation': request.data.get('relation'),
+                    'age': request.data.get('age'),
+                }
+                if data['relation'] in dict(FamilyInsurance._meta.get_field('relation').choices).keys():
+                    family_serialiser= FamilySerialiser(data= data)
+                    if family_serialiser.is_valid():
+                        family_serialiser.save()
+                        response= {
+                            "message": "Family memeber is added successfully",
+                            "data": family_serialiser.data,
+                        }
+                        return Response(data= response, status= status.HTTP_201_CREATED)
+                    return Response(data= family_serialiser.errors, status= status.HTTP_400_BAD_REQUEST)
+                return Response({"Error": "This relationship cannot be accepted. We accept Son, Daughter or spouse"})
+            return Response({"Error": "Your susbcription is Single"}, status= status.HTTP_403_FORBIDDEN)
+        except MedicalInsurance.DoesNotExist:
+            return Response({"Error": "You need to subscribe first"}, status= status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+def get_family_members(request:Request):
+    if request.method == 'GET':
+        email= request.data.get('email')
+        user= get_object_or_404(CustomUser, email= email)
+        try:
+            insurance= MedicalInsurance.objects.get(customer= user.pk)
+            if insurance.subscription == "family":
+                family_serialiser= FamilySerialiser(instance= insurance.family_members.all(), many= True)
+                return Response(data= family_serialiser.data, status= status.HTTP_200_OK)
+            return Response({"Error": "No family members. Single subscription"}, status= status.HTTP_404_NOT_FOUND)
+        except MedicalInsurance.DoesNotExist:
+            return Response({"Error": "NO policy is found for this customer"}, status= status.HTTP_404_NOT_FOUND)
+
+
 # a4aad5fa655581e2d63094551ac4649289155561 Mina
 # 00ea0811f6659a612f5a4efd05994a13de35a7c4 Harry
 
