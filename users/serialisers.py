@@ -43,3 +43,9 @@ class PostInsuranceSerialiser(serializers.ModelSerializer):
             validated_data['family_policy'] = False
 
         return super().create(validated_data)
+
+
+class FamilySerialiser(serializers.ModelSerializer):
+    class Meta:
+        model= FamilyInsurance
+        fields= ["insurance", "first_name", "last_name", "relation", "age"]
