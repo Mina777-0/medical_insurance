@@ -9,24 +9,86 @@
         <style>
             body{
                 margin: 0;
-                background-color: rgb(55, 68, 68);
-                color:aqua;
-            }
-            body a{
-                color: aqua;
+                background-color: rgb(192, 220, 244);
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                color: rgb(2, 22, 41);
             }
 
-            th, tr{
-                padding: 10px;
+            
+            a button {
+                margin-top: 15px;
+                padding: 5px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+                border: thin;
+                border-radius: 5px;
+                width:fit-content;
+                height: max-content;
+            }
+            a button:hover {
+                cursor: pointer;
+            }
+            
+
+            .main{
+                margin: 8px;
+                padding: 8px;
+                
+            }
+            .main h3{
+                font-weight: bold;
+                font-style: oblique;
+            }
+
+            tr, td{
+                margin: 5px;
+                padding: 6px;
                 text-align: center;
             }
 
+            tr:nth-child(even){
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+            }
+
+            .form-style form{
+                margin: 15px;
+                padding: 8px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                width: fit-content;
+                height: max-content;
+                text-align: center;
+                border-radius: 5px;
+            }
+            .form-style select{
+                margin: 5px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+            .form-style button{
+                margin: 5px;
+                background-color: rgb(192, 220, 244);
+                color: rgb(2, 22, 41);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+            }
+
+            
         </style>
     
     </head>
     <body>
         <div>
-            <div>
+            <div class="main">
                 <h3>Users:</h3>
                 
                 <table>
@@ -50,52 +112,54 @@
                         </tr>
                     {% endfor %}
                 </table>
-                
-                <div>
-                    <h3>remove users from groups</h3>
-                    <form method="post" action="{% url 'remove_user_from_group' %}">
-                        {% csrf_token %}
-                        <label for="email">Select a user</label>
-                        <select name="email" id="user" required>
-                            {% for user in users %}
-                                <option value="{{ user.email }}">{{ user.first_name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit">remove from groups</button>
-                    </form>
-                </div>
-                <script>
-                    document.querySelector('form').onsubmit = function(event){
-                        event.preventDefault();
 
-                        var formdata = new FormData(this);
-
-                        fetch("{% url 'remove_user_from_group' %}", {
-                            method: 'POST',
-                            body: formdata,
-                            headers: {
-                                'X-CSRFToken': '{{ csrf_token }}'
-                            },
-                        })
-                        .then(response =>{
-                            if(!response.ok){
-                                throw new Error("network is not repsonding");
-                            }
-                            return response.json();
-                        })
-                        .then(data =>{
-                            console.log("data:", data.message);
-                            alert(`User ${data.user_name} is removed from all groups successfully`);
-                            window.location.href= "{% url 'users' %}";
-                        })
-                        .catch(error =>{
-                            console.log("something wrong with the fetching process", error);
-                            alert("Error removing user from group");
-                        });
-                    }
-                </script>
+                <a href="{% url 'signup' %}"><button>New user</button></a>
             </div>
-            <a href="{% url 'signup' %}">New user</a>
+                
+            <div class="form-style">
+                <form method="post" action="{% url 'remove_user_from_group' %}">
+                    {% csrf_token %}
+                    <label for="email">Select a user</label><br>
+                    <select name="email" id="user" required><br>
+                        <option></option>
+                        {% for user in users %}
+                            <option value="{{ user.email }}">{{ user.first_name }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <button type="submit">remove user from groups</button>
+                </form>
+            </div>
+            <script>
+                document.querySelector('form').onsubmit = function(event){
+                    event.preventDefault();
+
+                    var formdata = new FormData(this);
+
+                    fetch("{% url 'remove_user_from_group' %}", {
+                        method: 'POST',
+                        body: formdata,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                    })
+                    .then(response =>{
+                        if(!response.ok){
+                            throw new Error("network is not repsonding");
+                        }
+                        return response.json();
+                    })
+                    .then(data =>{
+                        console.log("data:", data.message);
+                        alert(`User ${data.user_name} is removed from all groups successfully`);
+                        window.location.href= "{% url 'users' %}";
+                    })
+                    .catch(error =>{
+                        console.log("something wrong with the fetching process", error);
+                        alert("Error removing user from group");
+                    });
+                }
+            </script>
+        
         </div>
     </body>
 </html>
