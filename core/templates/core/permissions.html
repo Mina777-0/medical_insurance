@@ -5,9 +5,82 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Permissions Page</title>
+
+        <style>
+            body{
+                margin: 0;
+                background-color: rgb(192, 220, 244);
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                color: rgb(2, 22, 41);
+            }
+
+            .perm-sect{
+                margin: 8px;
+                padding: 8px;
+            }
+
+            .perm-sect a button {
+                margin-top: 15px;
+                padding: 5px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+                border: thin;
+                border-radius: 5px;
+                width:fit-content;
+                height: max-content;
+            }
+            .perm-sect a button:hover {
+                cursor: pointer;
+            }
+
+            .form-sect{
+                margin-top: 50px;
+                margin-left: 40%;
+                padding: 8px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                width: fit-content;
+                height: max-content;
+                text-align: center;
+                border: thin;
+                border-radius: 5px;
+            }
+
+            .form-sect input{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 75%px;
+                height: 20px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+
+            .form-sect button{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 25%px;
+                height: 30px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            
+
+        </style>
     </head>
     <body>
-        <div>
+        <div class="perm-sect">
             <h3>Group Permissions:</h3>
             <ul>
                 {% for permission in permissions %}
@@ -16,9 +89,9 @@
                     <li>This group isn't assigned permissions</li>
                 {% endfor %}
             </ul>
-            <a href="{% url 'remove_permissions' group.name %}">Remove permissions</a>
+            <a href="{% url 'remove_permissions' group.name %}"><button>Remove permissions</button></a>
         </div>
-        <div>
+        <div class="form-sect">
             <h3>Available permssions:</h3>
             <form id="permission-form" method="post" action="{% url 'add_permissions' group.name %}">
                 {% csrf_token %}
