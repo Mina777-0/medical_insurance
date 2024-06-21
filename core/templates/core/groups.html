@@ -9,12 +9,89 @@
         <style>
             body{
                 margin: 0;
-                background-color: rgb(55, 68, 68);
-                color:aqua;
+                background-color: rgb(192, 220, 244);
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                color: rgb(2, 22, 41);
             }
-            body a{
-                color: aqua;
+
+            a button {
+                margin-top: 15px;
+                padding: 5px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+                border: thin;
+                border-radius: 5px;
+                width:fit-content;
+                height: max-content;
             }
+            a button:hover {
+                cursor: pointer;
+            }
+
+            tr a, td{
+                margin-top: 15px;
+                padding: 5px;
+                color: rgb(2, 22, 41);
+                text-decoration: none;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-style: oblique;
+            }
+            tr a:hover {
+                cursor: pointer;
+            }
+            
+            .section {
+                margin-top: 2%;
+                margin-left: 40%;
+                padding: 8px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                width: fit-content;
+                height: max-content;
+                text-align: center;
+                border: thin;
+                border-radius: 5px;
+            }
+
+            .section input{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 75%px;
+                height: 20px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+
+            .section button{
+                border: thin;
+                border-radius: 5px;
+                color: rgb(2, 22, 41);
+                width: 25%px;
+                height: 30px;
+                padding: 8px;
+                margin: 5px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .section select{
+                margin: 5px;
+                background-color: rgb(2, 22, 41);
+                color: rgb(192, 220, 244);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+            }
+            
 
         </style>
     
@@ -24,17 +101,18 @@
         <div>
             <h3>Groups:</h3>
             <table>
-                <th>group name</th>
+                <th>Group name</th>
+                <th>Edit</th>
                 {% for group in groups %}
                     <tr>
                         <td><a href="{% url 'add_permissions' group.name %}">{{ group }}</a></td>
-                        <td><a href="{% url 'remove_group' group.name %}">remove</a></td> 
+                        <td><a href="{% url 'remove_group' group.name %}">remove</a></td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
 
-        <div>
+        <div class="section">
             <h3>New group:</h3>
             <form id="new-group" method="post" action="{% url 'create_group' %}">
                 {% csrf_token %}
@@ -77,12 +155,14 @@
 
         </script>
 
-<div>
+<div class="section">
     <h3>Add users to groups</h3>
     <form id="new-group-user" method="post" action="{% url 'add_to_group' %}">
         {% csrf_token %}
         <label for="user">Select user:</label>
         <select name="user" id="user" required>
+            <option></option>
+
             {% for user in users %}
                 <option value="{{ user.email}}">{{ user.first_name }}</option>
             {% endfor %}
@@ -90,6 +170,7 @@
 
         <label for="group">Select group:</label>
         <select name="group" id="group" required>
+            <option></option>
             {% for group in groups %}
                 <option value="{{ group }}">{{ group }}</option>
             {% endfor %}
